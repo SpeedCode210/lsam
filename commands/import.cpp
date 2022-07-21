@@ -2,15 +2,17 @@
 #include "../json.hpp"
 #include "../Application.hpp"
 #include "../consts.h"
+#include "../templates.hpp"
 #include <unistd.h>
 #include <iostream>
 #include <fstream>
 #include <array>
 #include <string>
 #include <filesystem>
+#include <regex>
 
 
-  namespace {
+namespace {
       std::string exec(const char *cmd) {
           std::array<char, 128> buffer;
           std::string result;
@@ -22,6 +24,16 @@
               result += buffer.data();
           }
           return result;
+      }
+
+      void replaceAll(std::string& str, const std::string& from, const std::string& to) {
+          if(from.empty())
+              return;
+          size_t start_pos = 0;
+          while((start_pos = str.find(from, start_pos)) != std::string::npos) {
+              str.replace(start_pos, from.length(), to);
+              start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
+          }
       }
   }
 
@@ -119,7 +131,19 @@ namespace commands{
 
         system(("cp -r " + tmp + "/app " + app.Directory).c_str());
 
-        system(("cp " + tmp + "/app.service /etc/systemd/system/" + serviceName + ".service").c_str());
+        //Recreate service file
+        std::string service = std::get<1>(templates::Templates.at(app.Type));
+        service = std::regex_replace(service, std::regex("\\{user\\}"), app.NeedsRoot ? "root" : USERNAME);
+        service = std::regex_replace(service, std::regex("\\{workingDir\\}"), app.Directory);
+        service = std::regex_replace(service, std::regex("\\{file\\}"), app.EntryFile);
+
+        system(("touch /etc/systemd/system/" + app.ServiceName + ".service").c_str());
+
+        std::ofstream fileService;
+        fileService.open("/etc/systemd/system/" + app.ServiceName + ".service",
+                         std::ofstream::out | std::ofstream::trunc);
+        fileService << service;
+        fileService.close();
 
         Application::AddApp(app);
 
