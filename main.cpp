@@ -51,6 +51,7 @@ int main(int argc, char* argv[])
 
     std::unordered_map<std::string, std::function<int(int, char* [])>> commands;
 
+    commands["version"] = commands::VersionCommand;
     commands["help"] = commands::HelpCommand;
     commands["list"] = commands::ListCommand;
     commands["create"] = commands::CreateCommand;

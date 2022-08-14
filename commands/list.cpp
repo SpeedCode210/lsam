@@ -8,7 +8,7 @@ namespace commands {
         CliTable::Options opt;
         CliTable::TableBody content;
 
-        content.push_back({"Name", "Service", "Type", "Status", "Autostart", "Root", "Path"});
+        content.push_back({"Name", "Service", "Status", "Autostart", "Root"});
 
         auto apps = Application::GetApps();
 
@@ -18,7 +18,6 @@ namespace commands {
                     {
                             apps[i].DisplayName,
                             apps[i].ServiceName,
-                            apps[i].Type,
                             apps[i].IsRunning == "active"
                             ? "Running"
                             : apps[i].IsRunning == "inactive"
@@ -29,8 +28,7 @@ namespace commands {
                             : "No",
                             apps[i].NeedsRoot
                             ? "Yes"
-                            : "No",
-                            apps[i].Directory
+                            : "No"
                     }
             );
         }

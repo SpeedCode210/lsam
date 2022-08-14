@@ -1,3 +1,4 @@
+#include "version.hpp"
 #include "help.hpp"
 #include "list.hpp"
 #include "create.hpp"

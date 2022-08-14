@@ -49,3 +49,9 @@ We provide packages for most popular Linux distributions
 
 - [nlohmann/json](https://github.com/nlohmann/json) for manipulating json files.
 - [sdmg15/cli-table-cpp](https://github.com/sdmg15/cli-table-cpp) for displaying tables.
+
+## Compilation dependencies
+
+```
+gcc g++ glibc-static libstdc++-static
+```
