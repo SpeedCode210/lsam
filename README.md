@@ -8,7 +8,7 @@ It will allow you to manage NodeJS, Python, Java, .NET, Go...and more applicatio
 ## Requirements
 - Any Linux distribution based on systemd service management system.
 
-We provide packages for most popular Linux distributions
+We provide packages for the most popular Linux distributions
 
 ## Features
 - Application creation wizard
